@@ -14,6 +14,13 @@ class DetailScreenViewModel : ViewModel() {
     val listaInvitadosRemoved: LiveData<List<String>> = _listaInvitadosRemoved
     val nameInvited: LiveData<String> = _nameInvited
     val db = Firebase.firestore
+    private val _checkedUser = MutableLiveData<Boolean>()
+    val checkedUser: LiveData<Boolean> = _checkedUser
+
+
+    fun checkUser(partida: Partida, usuario: Usuario) {
+        _checkedUser.value = partida.jugadores.contains(usuario.nickName)
+    }
 
     fun addInvited(name: String, partida: Partida, usuario: Usuario) {
         var mPartida = partida

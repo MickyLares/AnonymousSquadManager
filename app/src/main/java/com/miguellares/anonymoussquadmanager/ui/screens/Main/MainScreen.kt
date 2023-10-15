@@ -59,15 +59,6 @@ fun MainScreen(
         drawerContent = { DrawerMenuApp(mainScrollState, navController, usuario) },
         bottomBar = {
             ButtonMenu(navController = mainNavController) {
-               /* mainNavController.navigate(it.route) {
-                    mainNavController.graph.startDestinationRoute?.let { route ->
-                        popUpTo(route) {
-                            saveState = true
-                        }
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }*/
                 viewModel.onClickAddEvent(true)
             }
         }) {

@@ -8,10 +8,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PersonAddAlt
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -25,6 +23,7 @@ import com.miguellares.anonymoussquadmanager.components.topBarInterior
 import com.miguellares.anonymoussquadmanager.models.Partida
 import com.miguellares.anonymoussquadmanager.models.Usuario
 import com.miguellares.anonymoussquadmanager.ui.screens.Details.DetailScreenViewModel
+import com.miguellares.anonymoussquadmanager.ui.screens.Main.MainViewModel
 import com.miguellares.anonymoussquadmanager.utils.Utils
 
 @Composable
@@ -32,7 +31,8 @@ fun DetailOficialScreen(
     partida: Partida,
     navController: NavController,
     usuario: Usuario,
-    viewModel: DetailScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: DetailScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    mainViewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
 
     val onClickButtonInvited = remember {
@@ -45,7 +45,7 @@ fun DetailOficialScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             renderOficialHeaderBody()
             mySpace(espacio = 20)
-            renderBody(usuario = usuario, partida = partida, onClickButtonInvited, viewModel)
+            renderBody(usuario = usuario, partida = partida, onClickButtonInvited, viewModel, mainViewModel)
         }
 
     }
@@ -56,7 +56,8 @@ fun DetailNoOficialScreen(
     partida: Partida,
     navController: NavController,
     usuario: Usuario,
-    viewModel: DetailScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: DetailScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    mainViewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val onClickButtonInvited = remember {
         mutableStateOf(false)
@@ -68,7 +69,7 @@ fun DetailNoOficialScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             renderNoOficialHeaderBody(usuario, partida)
             mySpace(espacio = 20)
-            renderBody(usuario = usuario, partida = partida, onClickButtonInvited, viewModel)
+            renderBody(usuario = usuario, partida = partida, onClickButtonInvited, viewModel, mainViewModel)
         }
 
     }
@@ -79,9 +80,11 @@ fun renderBody(
     usuario: Usuario,
     partida: Partida,
     onClickButtonInvited: MutableState<Boolean>,
-    viewModel: DetailScreenViewModel
+    viewModel: DetailScreenViewModel,
+    mainViewModel: MainViewModel
 ) {
-
+    val agregado by viewModel.checkedUser.observeAsState(initial = false)
+    viewModel.checkUser(partida, usuario)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -104,11 +107,10 @@ fun renderBody(
             campoField(name = partida.fecha)
             renderButtonInvite(onClickButtonInvited)
             mySpace(espacio = 5)
-            val agregado = true
             if (!agregado) {
-                renderButtonInscribirme()
+                renderButtonInscribirme(mainViewModel, usuario, partida)
             } else {
-                renderButtonRemove()
+                renderButtonRemove(mainViewModel, usuario, partida)
             }
             if (onClickButtonInvited.value) {
                 DialogInvited(
@@ -123,9 +125,9 @@ fun renderBody(
 }
 
 @Composable
-fun renderButtonRemove() {
+fun renderButtonRemove(mainViewModel: MainViewModel, usuario: Usuario, partida: Partida) {
     Button(
-        onClick = { },
+        onClick = { mainViewModel.removeGamerFromGame(Utils.PARTIDA, usuario, partida) },
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 4.dp)
             .fillMaxWidth()
@@ -145,9 +147,9 @@ fun renderButtonRemove() {
 }
 
 @Composable
-fun renderButtonInscribirme() {
+fun renderButtonInscribirme(mainViewModel: MainViewModel, usuario: Usuario, partida: Partida) {
     Button(
-        onClick = { },
+        onClick = {  mainViewModel.addGamerToGame(Utils.PARTIDA, usuario, partida)},
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 4.dp)
             .fillMaxWidth()

@@ -218,7 +218,7 @@ class MainViewModel : ViewModel() {
     fun addGamerToGame(typeEvent: String, usuario: Usuario, partida: Partida) {
         var listaGamer = mutableListOf<String>()
         var myPartida = partida
-        if (myPartida.jugadores.contains(usuario.nickName)) {
+        if (!myPartida.jugadores.contains(usuario.nickName)) {
             usuario.nickName?.let { (myPartida.jugadores as MutableList<String>).add(it) }
             var isOficial: Boolean = contUsuarios(myPartida.jugadores)
             db.collection(typeEvent).document(partida.id).set(
@@ -266,4 +266,6 @@ class MainViewModel : ViewModel() {
         }
 
     }
+
+
 }
