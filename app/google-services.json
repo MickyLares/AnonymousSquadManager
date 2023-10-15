@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "913470699542",
-    "project_id": "anonymoussquadmanager",
-    "storage_bucket": "anonymoussquadmanager.appspot.com"
+    "project_number": ,
+    "project_id": ,
+    "storage_bucket": 
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:913470699542:android:11ddaaa4aef5d75d3d1d37",
+        "mobilesdk_app_id": ,
         "android_client_info": {
-          "package_name": "com.miguellares.anonymoussquadmanager"
+          "package_name": 
         }
       },
       "oauth_client": [
         {
-          "client_id": "913470699542-poskb64olqghf757ifj1ers5sku461hg.apps.googleusercontent.com",
+          "client_id": ,
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBkZD1ZPk_d5B6CEiKyEr6IGq5WE1QWJM0"
+          "current_key": 
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "913470699542-poskb64olqghf757ifj1ers5sku461hg.apps.googleusercontent.com",
+              "client_id":
               "client_type": 3
             }
           ]
